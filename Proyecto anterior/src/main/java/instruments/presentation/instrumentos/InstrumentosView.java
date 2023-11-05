@@ -56,7 +56,7 @@ public class InstrumentosView implements Observer {
 
 
 
-                List<TipoInstrumento> tiposInstrumento = Service.instance().getData().getTipos();
+                List<TipoInstrumento> tiposInstrumento = new ArrayList<>();
                 // Asignar el TipoInstrumento asociado a este instrumento
                 TipoInstrumento tipoInstrumentoSeleccionado = null;
                 for (TipoInstrumento tipo : tiposInstrumento) {
@@ -107,7 +107,7 @@ public class InstrumentosView implements Observer {
                 if (selectedRow >= 0) {
                     instrumentosController.edit(selectedRow);
                     instrumentosController.onSelectInstrumento();
-                    comboBoxTipo.setSelectedItem(instrumentosController.getSelectedInstrumento().getTipoInstrumento().getNombre());
+                   // comboBoxTipo.setSelectedItem(instrumentosController.getSelectedInstrumento().getTipoInstrumento().getNombre());
 
                 }
             }
@@ -133,7 +133,7 @@ public class InstrumentosView implements Observer {
             public void componentShown(ComponentEvent e) {
                 super.componentShown(e);
                 comboBoxTipo.removeAllItems();
-                List<TipoInstrumento> tiposInstrumento = Service.instance().getData().getTipos();
+                List<TipoInstrumento> tiposInstrumento = new ArrayList<>();
 
                 for (TipoInstrumento tipo : tiposInstrumento) {
                     comboBoxTipo.addItem(tipo.getNombre());

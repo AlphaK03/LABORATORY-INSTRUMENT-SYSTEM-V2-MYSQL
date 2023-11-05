@@ -57,7 +57,7 @@ public class CalibracionView implements Observer {
             public void componentShown(ComponentEvent e) {
                 super.componentShown(e);
                 deleteCalibraciones.setEnabled(false);
-                calibracionController.setLastSelectedInstrumento();
+               // calibracionController.setLastSelectedInstrumento();
                 if (calibracionController.lastSelectedInstrumento != null) {
                     panelText.setText(calibracionController.lastSelectedInstrumento.toString());
                     panelText.setForeground(Color.RED);
@@ -203,7 +203,7 @@ public class CalibracionView implements Observer {
                     ButtonUtils.fixColorTextFields(numero, fecha, mediciones);
 
                     List<Calibracion> calibracions = calibracionModel.getList();
-                    calibracionController.generatePDFReport(calibracions);
+                   // calibracionController.generatePDFReport(calibracions);
                     JOptionPane.showMessageDialog(calibracionesPanel, "Reporte generado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(calibracionesPanel, "Error al generar el reporte: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

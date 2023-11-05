@@ -13,13 +13,13 @@ public class CalibracionController {
 
     Instrumento lastSelectedInstrumento;
 
-    public void setLastSelectedInstrumento() {
-        this.lastSelectedInstrumento = Service.instance().getLastSelectedInstrumentoSelectInstrumento();
-        calibracionModel.init(lastSelectedInstrumento.getCalibracionList());
-    }
+//    public void setLastSelectedInstrumento() {
+//        this.lastSelectedInstrumento = Service.instance().getLastSelectedInstrumentoSelectInstrumento();
+//        calibracionModel.init(lastSelectedInstrumento.getCalibracionList());
+//    }
 
     public CalibracionController(CalibracionView view, CalibracionModel model) {
-        model.init(Service.instance().searchCalibracion(new Calibracion()));
+      //  model.init(Service.instance().searchCalibracion(new Calibracion()));
         this.calibracionView = view;
         this.calibracionModel = model;
         view.setCalibracionController(this);
@@ -27,7 +27,7 @@ public class CalibracionController {
     }
 
     public void search(Calibracion filter) throws Exception {
-        List<Calibracion> rows = Service.instance().searchCalibracion(filter);
+        List<Calibracion> rows = Service.instance().search(filter);
         if (rows.isEmpty()) {
             throw new Exception("NO RECORDS MATCH");
         }
@@ -43,13 +43,13 @@ public class CalibracionController {
     }
 
     public void delete(Calibracion calibracion) throws Exception {
-        Service.instance().deleteCalibracion(calibracion, lastSelectedInstrumento);
+        Service.instance().delete(calibracion);
         calibracionModel.delete(calibracion);
     }
 
     public void create(Calibracion calibracion) {
         try {
-            Service.instance().createCalibracion(calibracion, lastSelectedInstrumento);
+            Service.instance().create(calibracion);
             calibracionModel.init(lastSelectedInstrumento.getCalibracionList());
             calibracionModel.commit();
             saveData();
@@ -60,16 +60,16 @@ public class CalibracionController {
     }
 
     public void update(Calibracion calibracion) throws Exception {
-        Service.instance().updateCalibracion(calibracion, lastSelectedInstrumento);
+        Service.instance().update(calibracion);
         calibracionModel.update(calibracion);
         saveData();
     }
 
     public void saveData() throws Exception {
-        Service.instance().saveData();
+       // Service.instance().saveData();
     }
 
-    public void generatePDFReport(List<Calibracion> calibracion) throws Exception {
-        Service.instance().generatePDFReport(calibracion);
-    }
+//    public void generatePDFReport(List<Calibracion> calibracion) throws Exception {
+//        Service.instance().generatePDFReport(calibracion);
+//    }
 }

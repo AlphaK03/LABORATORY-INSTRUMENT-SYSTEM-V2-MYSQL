@@ -2,7 +2,7 @@ package instruments.presentation.tipos;
 
 import instruments.logic.Service;
 import instruments.logic.TipoInstrumento;
-
+import instruments.Application;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
@@ -11,8 +11,11 @@ public class TiposModel extends java.util.Observable{
     List<TipoInstrumento> list;
 
     TipoInstrumento current;
+    TipoInstrumento filter;
 
     int changedProps = NONE;
+    int mode;
+    int props;
 
     @Override
     public void addObserver(Observer o) {
@@ -29,15 +32,14 @@ public class TiposModel extends java.util.Observable{
 
 
     public TiposModel() {
-        this.list = Service.instance().getData().getTipos();
-        if(list == null){
-            this.list = new ArrayList<>();
-        }
     }
 
-    public void init(List<TipoInstrumento> list){
-        setList(list);
-        setCurrent(new TipoInstrumento());
+    public void init(){
+        props=0;
+        filter = new TipoInstrumento();
+        List<TipoInstrumento> list = new ArrayList<TipoInstrumento>();
+        this.setList(list);
+        mode= Application.MODE_CREATE;
     }
 
     //Modificar esta función clasificando el retun segúan sea el caso solicitado

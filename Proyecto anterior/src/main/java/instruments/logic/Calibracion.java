@@ -85,7 +85,7 @@ public class Calibracion {
         return mediciones;
     }
 
-    public void setMediciones(List<Medicion> mediciones) {
-        this.mediciones = mediciones;
+    public void setMediciones(int mediciones) {
+        this.cantidadMediciones = mediciones;
     }
 }

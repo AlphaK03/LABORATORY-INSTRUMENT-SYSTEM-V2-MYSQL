@@ -10,11 +10,14 @@ import instruments.presentation.instrumentos.InstrumentosView;
 import instruments.presentation.tipos.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Objects;
 
 public class Application {
+
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");}
@@ -80,4 +83,9 @@ public class Application {
     public static TiposController tiposController;
 
     public static JFrame window;
+
+    public final static int MODE_CREATE=1;
+    public final static int MODE_EDIT=2;
+
+    public static Border BORDER_ERROR = BorderFactory.createMatteBorder(0, 0, 2, 0, Color.RED);
 }

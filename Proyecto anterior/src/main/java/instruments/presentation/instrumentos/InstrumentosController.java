@@ -13,7 +13,7 @@ public class InstrumentosController {
 
 
     public InstrumentosController(InstrumentosView view, InstrumentosModel model) {
-        model.init(Service.instance().getData().getInstrumentos());
+        //model.init(Service.instance().getData().getInstrumentos());
         this.instrumentosView = view;
         this.instrumentosModel = model;
         view.setInstrumentosController(this);
@@ -21,7 +21,7 @@ public class InstrumentosController {
     }
 
     public void search(Instrumento filter) throws  Exception{
-        List<Instrumento> rows = Service.instance().searchInstrumento(filter);
+        List<Instrumento> rows = Service.instance().search(filter);
         if (rows.isEmpty()){
             throw new Exception("NINGUN REGISTRO COINCIDE");
         }
@@ -38,7 +38,7 @@ public class InstrumentosController {
 
 
     public void delete(Instrumento instrumento) throws Exception {
-        Service.instance().deleteInstrumento(instrumento);
+        Service.instance().delete(instrumento);
         instrumentosModel.delete(instrumento);
         instrumentosModel.current = null;
         onSelectInstrumento();
@@ -46,7 +46,7 @@ public class InstrumentosController {
 
     public void create(Instrumento instrumento) {
         try {
-            Service.instance().createInstrumento(instrumento);
+            Service.instance().create(instrumento);
             instrumentosModel.commit();
             saveData();
         } catch (Exception ex) {
@@ -55,25 +55,24 @@ public class InstrumentosController {
     }
 
     public void update(Instrumento instrumento) throws Exception {
-        Service.instance().updateInstrumento(instrumento);
+        Service.instance().update(instrumento);
         instrumentosModel.update(instrumento);
         saveData();
     }
 
     public void saveData() throws Exception {
-        Service.instance().saveData();
+        //Service.instance().saveData();
     }
 
     public void generatePDFReport(List<Instrumento> instrumentos) throws Exception {
-        Service.instance().generatePDFReport(instrumentos);
+       // Service.instance().generatePDFReport(instrumentos);
     }
 
 
     public void onSelectInstrumento() {
-        Service.instance().onSelectInstrumento(instrumentosModel.getCurrent());
+        //Service.instance().onSelectInstrumento(instrumentosModel.getCurrent());
     }
 
-    public Instrumento getSelectedInstrumento(){
-        return Service.instance().getLastSelectedInstrumentoSelectInstrumento();
-    }
+  //  public Instrumento getSelectedInstrumento(){
+        //return Service.instance().getLastSelectedInstrumentoSelectInstrumento();}
 }

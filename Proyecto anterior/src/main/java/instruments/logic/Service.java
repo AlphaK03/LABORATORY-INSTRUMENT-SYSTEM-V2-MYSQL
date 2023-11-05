@@ -1,269 +1,95 @@
 package instruments.logic;
 
-import com.itextpdf.io.image.ImageDataFactory;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Image;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.properties.TextAlignment;
-import instruments.Application;
-import instruments.data.Data;
-
-import java.io.FileOutputStream;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Comparator;
+import instruments.data.TipoInstrumentoDao;
+import instruments.data.InstrumentosDao;
+import instruments.data.CalibracionDao;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class Service {
     private static Service theInstance;
-    private Instrumento lastSelectedInstrumento;
-
-    private List<Medicion> medicionesList;
 
     public static Service instance() {
-        if (theInstance == null) theInstance = new Service();
+        if (theInstance == null) {
+            theInstance = new Service();
+        }
         return theInstance;
     }
 
-    private Data data;
+    private TipoInstrumentoDao tipoInstrumentoDao;
+    private InstrumentosDao instrumentosDao;
+    private CalibracionDao calibracionDao;
 
-    public Data getData() {
-        return data;
-    }
-
-    private Service() {
-        medicionesList = new ArrayList<>();
+    public Service() {
         try {
-            //data = XmlPersister.instance().load();
-        }catch (Exception ex){
-            data = new Data();
+            tipoInstrumentoDao = new TipoInstrumentoDao();
+            instrumentosDao = new InstrumentosDao();
+        } catch (Exception e) {
+            // Maneja la excepción adecuadamente
         }
     }
 
-    public List<Medicion> getMedicionesList() {
-        return medicionesList;
+    // ------------ TIPOS DE INTRUMENTO -------------
+
+    public void create(TipoInstrumento e) throws Exception {
+        tipoInstrumentoDao.create(e);
     }
 
-    public void setMedicionesList(List<Medicion> medicionesList) {
-        this.medicionesList = medicionesList;
+    public TipoInstrumento read(TipoInstrumento e) throws Exception {
+        return tipoInstrumentoDao.read(e.getCodigo());
     }
 
-    // Funciones para TipoInstrumento
-    public void createTipoInstrumento(TipoInstrumento e) throws Exception {
-        TipoInstrumento result = data.getTipos().stream()
-                .filter(i -> i.getCodigo().equals(e.getCodigo()))
-                .findFirst()
-                .orElse(null);
-        if (result == null) {
-            data.getTipos().add(e);
-        } else {
-            throw new Exception("Tipo ya existe");
-        }
+    public void update(TipoInstrumento e) throws Exception {
+        tipoInstrumentoDao.update(e);
     }
 
-    public TipoInstrumento readTipoInstrumento(TipoInstrumento e) throws Exception {
-        TipoInstrumento result = data.getTipos().stream()
-                .filter(i -> i.getCodigo().equals(e.getCodigo())).findFirst().orElse(null);
-        if (result != null) return result;
-        else throw new Exception("Tipo no existe");
+    public void delete(TipoInstrumento e) throws Exception {
+        tipoInstrumentoDao.delete(e);
     }
 
-    public void updateTipoInstrumento(TipoInstrumento e) throws Exception {
-        TipoInstrumento result;
-        try {
-            result = this.readTipoInstrumento(e);
-            data.getTipos().remove(result);
-            data.getTipos().add(e);
-        } catch (Exception ex) {
-            throw new Exception("Tipo no existe");
-        }
+    public List<TipoInstrumento> search(TipoInstrumento e) throws Exception {
+        return tipoInstrumentoDao.search(e);
     }
 
-    public void deleteTipoInstrumento(TipoInstrumento e) throws Exception {
-        data.getTipos().remove(e);
+    // ------------ INSTRUMENTOS -------------
+
+    public void create(Instrumento e) throws Exception {
+        instrumentosDao.create(e);
     }
 
-    public List<TipoInstrumento> searchTipoInstrumento(TipoInstrumento e) {
-        return data.getTipos().stream()
-                .filter(i -> i.getNombre().contains(e.getNombre()))
-                .sorted(Comparator.comparing(TipoInstrumento::getNombre))
-                .collect(Collectors.toList());
+    public Instrumento read(Instrumento e) throws Exception {
+        return instrumentosDao.read(e.getSerie());
     }
 
-    // Funciones para Instrumento
-    public void createInstrumento(Instrumento e) throws Exception {
-        Instrumento result = data.getInstrumentos().stream()
-                .filter(i -> i.getSerie().equals(e.getSerie()))
-                .findFirst()
-                .orElse(null);
-        if (result == null) {
-            data.getInstrumentos().add(e);
-        } else {
-            throw new Exception("Instrumento ya existe");
-        }
+    public void update(Instrumento e) throws Exception {
+        instrumentosDao.update(e);
     }
 
-    public Instrumento readInstrumento(Instrumento e) throws Exception {
-        Instrumento result = data.getInstrumentos().stream()
-                .filter(i -> i.getSerie().equals(e.getSerie())).findFirst().orElse(null);
-        if (result != null) return result;
-        else throw new Exception("Instrumento no existe");
+    public void delete(Instrumento e) throws Exception {
+        instrumentosDao.delete(e);
     }
 
-    public void updateInstrumento(Instrumento e) throws Exception {
-        Instrumento result;
-        try {
-            result = this.readInstrumento(e);
-            data.getInstrumentos().remove(result);
-            data.getInstrumentos().add(e);
-            onSelectInstrumento(e);
+    public List<Instrumento> search(Instrumento v) throws Exception {
+        return instrumentosDao.search(v);
+    }
+    // ------------ CALIBRACIONES -------------
 
-        } catch (Exception ex) {
-            throw new Exception("Instrumento no existe");
-        }
+    public void create(Calibracion e) throws Exception {
+        calibracionDao.create(e);
     }
 
-    public void deleteInstrumento(Instrumento e) throws Exception {
-        data.getInstrumentos().remove(e);
+    public Calibracion read(Calibracion e) throws Exception {
+        return calibracionDao.read(String.valueOf(e.getNumero()));
     }
 
-    public List<Instrumento> searchInstrumento(Instrumento e) {
-        return data.getInstrumentos().stream()
-                .filter(i -> i.getDescripcion().contains(e.getDescripcion()))
-                .sorted(Comparator.comparing(Instrumento::getDescripcion))
-                .collect(Collectors.toList());
+    public void update(Calibracion e) throws Exception {
+        calibracionDao.update(e);
     }
 
-
-    public void createCalibracion(Calibracion e, Instrumento instrumento) throws Exception {
-        boolean exists = instrumento.getCalibracionList().stream()
-                .anyMatch(i -> i.getNumero() == e.getNumero());
-
-        if (!exists) {
-            instrumento.getCalibracionList().add(e);
-            onSelectInstrumento(instrumento);
-        } else {
-            throw new Exception("Calibracion ya existe");
-        }
+    public void delete(Calibracion e) throws Exception {
+        calibracionDao.delete(e);
     }
 
-    // Funciones para Calibracion
-
-    public Calibracion readCalibracion(Calibracion e, Instrumento instrumento) throws Exception {
-        Calibracion result = instrumento.getCalibracionList().stream()
-                .filter(i -> i.getNumero() == e.getNumero())
-                .findFirst()
-                .orElse(null);
-        if (result != null) return result;
-        else throw new Exception("Calibracion no existe");
-    }
-
-    public void updateCalibracion(Calibracion e, Instrumento instrumento) throws Exception {
-        Calibracion result;
-        try {
-            result = this.readCalibracion(e, instrumento);
-            instrumento.getCalibracionList().remove(result);
-            instrumento.getCalibracionList().add(e);
-        } catch (Exception ex) {
-            throw new Exception("Calibracion no existe");
-        }
-    }
-
-    public void deleteCalibracion(Calibracion e, Instrumento instrumento) throws Exception {
-        instrumento.eliminarCalibracion(e);
-    }
-
-    public List<Calibracion> searchCalibracion(Calibracion filter) {
-        if (lastSelectedInstrumento == null){lastSelectedInstrumento = new Instrumento();}
-        return lastSelectedInstrumento.getCalibracionList().stream()
-                .filter(i -> String.valueOf(i.getNumero()).contains(String.valueOf(filter.getNumero())))
-                .sorted(Comparator.comparing(Calibracion::getNumero))
-                .collect(Collectors.toList());
-    }
-
-
-
-
-
-    public void generatePDFReport(List<?> objects) throws Exception {
-        String outputFilePath = reportFileName(objects);
-
-
-        PdfDocument pdfDocument = new PdfDocument(new PdfWriter(new FileOutputStream(outputFilePath)));
-        Document document = new Document(pdfDocument);
-
-        Image img = new Image(ImageDataFactory.create(Objects.requireNonNull(Application.class.getResource("presentation/icons/pdf (1).png"))));
-        document.add(img);
-
-        String titleText = "Reporte";
-        if (!objects.isEmpty()) {
-            Object firstObject = objects.get(0);
-            titleText += " de " + firstObject.getClass().getSimpleName() + "s";
-        }
-
-        Paragraph title = new Paragraph(titleText)
-                .setTextAlignment(TextAlignment.CENTER)
-                .setBold()
-                .setFontSize(24);
-        document.add(title);
-
-        for (Object obj : objects) {
-            Field[] fields = obj.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                field.setAccessible(true);
-                String propertyName = field.getName();
-                Object propertyValue = field.get(obj);
-
-                if (propertyValue != null) {
-                    document.add(new Paragraph(propertyName + ": " + propertyValue.toString()));
-                }
-            }
-            document.add(new Paragraph("----------------------------------"));
-        }
-
-        document.close();
-    }
-
-    public TipoInstrumento obtenerTipoInstrumentoPorCodigo(String codigo, String filePath) {
-        List<TipoInstrumento> tipos = data.getTipos();
-        return tipos.stream()
-                .filter(t -> t.getCodigo().equals(codigo))
-                .findFirst()
-                .orElse(null);
-    }
-
-    private String reportFileName(List<?> objects) {
-        if (objects.isEmpty()) {
-            return "files/PdfReports/default_report.pdf";
-        }
-
-        Object firstObject = objects.get(0);
-        if (firstObject instanceof TipoInstrumento) {
-            return "files/PdfReports/tipo_instrumento_report.pdf";
-        } else if (firstObject instanceof Instrumento) {
-            return "files/PdfReports/instrumento_report.pdf";
-        } else if (firstObject instanceof Calibracion) {
-            return "files/PdfReports/calibracion_report.pdf";
-        } else {
-            return "files/PdfReports/default_report.pdf";
-        }
-    }
-
-
-    public void onSelectInstrumento(Instrumento instrumento) {
-        lastSelectedInstrumento = instrumento;
-    }
-
-    public Instrumento getLastSelectedInstrumentoSelectInstrumento() {
-        return  lastSelectedInstrumento;
-    }
-
-    public void saveData() throws Exception {
-        //XmlPersister.instance().store(this.data);
+    public List<Calibracion> search(Calibracion v) throws Exception {
+        return calibracionDao.search(v);
     }
 }
-

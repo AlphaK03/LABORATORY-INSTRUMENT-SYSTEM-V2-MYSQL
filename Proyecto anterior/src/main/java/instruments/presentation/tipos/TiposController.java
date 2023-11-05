@@ -1,5 +1,4 @@
 package instruments.presentation.tipos;
-
 import instruments.logic.Service;
 import instruments.logic.TipoInstrumento;
 
@@ -10,7 +9,7 @@ public class TiposController {
     TiposModel tiposModel;
 
     public TiposController(TiposView tiposView, TiposModel tiposModel) {
-        tiposModel.init(Service.instance().getData().getTipos());
+        tiposModel.init();
         this.tiposView = tiposView;
         this.tiposModel = tiposModel;
         tiposView.setController(this);
@@ -18,11 +17,11 @@ public class TiposController {
     }
 
     public void generatePDFReport(List<TipoInstrumento> tipos) throws Exception {
-        Service.instance().generatePDFReport(tipos);
+        //Service.instance().generatePDFReport(tipos);
     }
 
     public void search(TipoInstrumento filter) throws  Exception{
-        List<TipoInstrumento> rows = Service.instance().searchTipoInstrumento(filter);
+        List<TipoInstrumento> rows = Service.instance().search(filter);
         if (rows.isEmpty()){
             throw new Exception("NINGUN REGISTRO COINCIDE");
         }
@@ -39,13 +38,13 @@ public class TiposController {
 
 
     public void delete(TipoInstrumento tipoInstrumento) throws Exception {
-        Service.instance().deleteTipoInstrumento(tipoInstrumento);
+        Service.instance().delete(tipoInstrumento);
         tiposModel.delete(tipoInstrumento);
     }
 
     public void create(TipoInstrumento tipoInstrumento) {
         try {
-            Service.instance().createTipoInstrumento(tipoInstrumento);
+            Service.instance().create(tipoInstrumento);
             tiposModel.commit();
             saveData();
         } catch (Exception ex) {
@@ -55,14 +54,14 @@ public class TiposController {
     }
 
     public void update(TipoInstrumento tipoInstrumento) throws Exception {
-        Service.instance().updateTipoInstrumento(tipoInstrumento);
+        Service.instance().update(tipoInstrumento);
         tiposModel.update(tipoInstrumento);
         saveData();
     }
 
 
     public void saveData() throws Exception {
-        Service.instance().saveData();
+        //Service.instance().saveData();
     }
 
 
