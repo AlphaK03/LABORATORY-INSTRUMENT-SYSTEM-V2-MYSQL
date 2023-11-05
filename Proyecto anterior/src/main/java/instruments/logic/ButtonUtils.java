@@ -1,4 +1,5 @@
 package instruments.logic;
+
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.*;

@@ -1,9 +1,5 @@
 package instruments.logic;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Medicion {
     private double valorReferencia; // Valor de referencia que debió haber marcado
     private double valorLectura; // Valor de lectura que en realidad marcó

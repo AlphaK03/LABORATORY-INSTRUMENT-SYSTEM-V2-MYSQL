@@ -1,7 +1,7 @@
 package instruments.presentation.tipos;
+
 import instruments.logic.Service;
 import instruments.logic.TipoInstrumento;
-import instruments.logic.XmlPersister;
 
 import java.util.List;
 

@@ -38,7 +38,7 @@ public class Service {
     private Service() {
         medicionesList = new ArrayList<>();
         try {
-            data = XmlPersister.instance().load();
+            //data = XmlPersister.instance().load();
         }catch (Exception ex){
             data = new Data();
         }
@@ -263,7 +263,7 @@ public class Service {
     }
 
     public void saveData() throws Exception {
-        XmlPersister.instance().store(this.data);
+        //XmlPersister.instance().store(this.data);
     }
 }
 

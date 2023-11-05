@@ -1,19 +1,13 @@
 package instruments.logic;
 
-import jakarta.xml.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Calibracion {
     private int numero;
-    @XmlIDREF
     private Instrumento instrumentoCalibrado;
     private String fecha;
     private int cantidadMediciones;
-    @XmlElementWrapper(name = "mediciones")
-    @XmlElement(name = "medicion")
     private List<Medicion> mediciones;
 
     public Calibracion(int numero, Instrumento instrumentoCalibrado, String fecha, int cantidadMediciones, List<Medicion> mediciones) {

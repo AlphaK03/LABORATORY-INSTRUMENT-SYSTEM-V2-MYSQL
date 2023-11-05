@@ -2,20 +2,13 @@ package instruments.data;
 
 import instruments.logic.Instrumento;
 import instruments.logic.TipoInstrumento;
-import instruments.logic.XmlPersister;
-import jakarta.xml.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Data {
 
-    @XmlElementWrapper(name = "instrumentos")
-    @XmlElement(name = "instrumento")
     private List<Instrumento> instrumentos;
-    @XmlElementWrapper(name = "tipos")
-    @XmlElement(name = "tipo")
+
     private List<TipoInstrumento> tipos;
 
 

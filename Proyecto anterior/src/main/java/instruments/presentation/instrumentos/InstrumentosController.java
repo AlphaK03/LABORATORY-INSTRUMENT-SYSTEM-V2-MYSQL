@@ -2,7 +2,6 @@ package instruments.presentation.instrumentos;
 
 import instruments.logic.Instrumento;
 import instruments.logic.Service;
-import instruments.logic.XmlPersister;
 
 import java.util.List;
 
